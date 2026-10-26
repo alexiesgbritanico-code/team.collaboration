@@ -25,20 +25,13 @@ Show status messages for successful operations, overflow, and underflow.
 Display stack elements vertically, with the newest element at the top.
 Use an array-based stack with a maximum capacity of 10 elements.
 
-7. Requirements:
+6. Requirements:
 Java Development Kit (JDK)
 NetBeans IDE or another Java IDE
 Java Swing library
 A computer capable of running Java applications
 
-7. How to Run the Program:
-
-Open NetBeans IDE.
-Open the project.
-Make sure the source files are in the correct package.
-Set StackGUI.java as the main class if needed.
-Build the project.
-Run the program.
+7. How to Run the Program: Open NetBeans IDE. Open the project. Make sure the source files are in the correct package. Set StackGUI.java as the main class if needed. Build the project. Run the program.
 Enter a value and click the desired stack operation button.
 
 8. Project Structure: The project contains separate classes for stack operations and the graphical user interface.
