@@ -41,14 +41,11 @@ Build the project.
 Run the program.
 Enter a value and click the desired stack operation button.
 
-8. Project Structure:
-
-The project contains separate classes for stack operations and the graphical user interface.
+8. Project Structure: The project contains separate classes for stack operations and the graphical user interface.
 StackModel.java – manages the stack data and its operations.
 StackGUI.java – handles the graphical interface, user input, buttons, and stack visualization.
 
-9. Stack Implementation:
-The program uses an array-based stack with a maximum capacity of 10 elements. It follows the LIFO principle, meaning the last element added is the first element removed.
+9. Stack Implementation: The program uses an array-based stack with a maximum capacity of 10 elements. It follows the LIFO principle, meaning the last element added is the first element removed.
 The stack class provides methods such as push(), pop(), peek(), isEmpty(), isFull(), size(), and clear(). The GUI accesses the stack through these methods instead of directly modifying its internal data.
 
 10.	Screenshots
