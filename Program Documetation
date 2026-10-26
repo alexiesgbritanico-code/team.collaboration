@@ -1,5 +1,1 @@
-How the Program Works:
-The Coffee Stack Visualizer is a Java program that demonstrates how a stack works using the LIFO (Last In, First Out) principle. 
-When the program starts, the GUI displays the stack, its size, the top element, and the available buttons. When the user clicks a button, the GUI calls the appropriate method from the stack class. 
-The stack is updated, and the GUI refreshes the display to show the current stack contents and status message.
 
