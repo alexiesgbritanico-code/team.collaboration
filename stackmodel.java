@@ -60,7 +60,7 @@ public class StackModel {
         top = -1;
     }
 
-    // Returns a copy; the GUI cannot modify the internal array.
+   
     public int[] getItems() {
         int[] copy = new int[size()];
 
@@ -71,3 +71,5 @@ public class StackModel {
         return copy;
     }
 }
+
+
