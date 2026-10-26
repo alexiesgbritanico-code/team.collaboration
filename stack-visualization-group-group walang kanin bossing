@@ -1,1 +1,437 @@
 
+/*
+Description: Coffee-themed GUI for visualizing an array-based stack.
+Programmed by: walang kanin bossing, BSIT, [CN 48160], [data strcuture and algorithm]
+Last Modified: October 22, 2026
+Version: 2.0
+Acknowledgements: ChatGPT by OpenAI, GPT-6.
+Prompt: Redesign a Java Swing stack visualization GUI using a
+coffee color theme, stack size and top element cards, styled
+buttons, and clear success, overflow, and underflow messages.
+*/
+
+import java.awt.*;
+import java.util.Random;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+public class StackGUI extends JFrame {
+
+    private final StackModel stack = new StackModel();
+    private final Random random = new Random();
+
+    private final Color espresso = new Color(75, 46, 36);
+    private final Color coffee = new Color(121, 85, 72);
+    private final Color caramel = new Color(184, 135, 91);
+    private final Color cream = new Color(245, 235, 221);
+    private final Color foam = new Color(255, 249, 240);
+    private final Color textBrown = new Color(65, 43, 32);
+
+    private final JTextField inputField = new JTextField(12);
+    private final JPanel stackPanel = new JPanel();
+    private final JLabel sizeValue = new JLabel("0 / 10");
+    private final JLabel topValue = new JLabel("None");
+    private final JLabel statusLabel = new JLabel(
+        "Welcome! Your stack is ready."
+    );
+
+    public StackGUI() {
+        setTitle("Coffee Stack Visualizer");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(620, 760);
+        setMinimumSize(new Dimension(520, 650));
+        setLocationRelativeTo(null);
+
+        JPanel main = new JPanel(new BorderLayout(0, 15));
+        main.setBackground(cream);
+        main.setBorder(new EmptyBorder(18, 20, 18, 20));
+        setContentPane(main);
+
+        // HEADER
+        JPanel header = new JPanel(new BorderLayout(10, 5));
+        header.setBackground(espresso);
+        header.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        JLabel title = new JLabel("COFFEE STACK");
+        title.setFont(new Font("SansSerif", Font.BOLD, 27));
+        title.setForeground(foam);
+
+        JLabel subtitle = new JLabel(
+            "STACK VISUALIZER  |  LIFO DATA STRUCTURE"
+        );
+        subtitle.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        subtitle.setForeground(new Color(226, 202, 177));
+
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
+        titlePanel.setBackground(espresso);
+        titlePanel.add(title);
+        titlePanel.add(Box.createVerticalStrut(5));
+        titlePanel.add(subtitle);
+
+        JLabel coffeeIcon = new JLabel("\u2615");
+        coffeeIcon.setFont(new Font("SansSerif", Font.PLAIN, 43));
+        coffeeIcon.setForeground(new Color(224, 190, 151));
+
+        header.add(titlePanel, BorderLayout.CENTER);
+        header.add(coffeeIcon, BorderLayout.EAST);
+        main.add(header, BorderLayout.NORTH);
+
+        // CENTER CONTENT
+        JPanel center = new JPanel(new BorderLayout(0, 12));
+        center.setOpaque(false);
+
+        // INFORMATION CARDS
+        JPanel cards = new JPanel(new GridLayout(1, 2, 12, 0));
+        cards.setOpaque(false);
+
+        cards.add(createInfoCard("STACK SIZE", sizeValue));
+        cards.add(createInfoCard("TOP ELEMENT", topValue));
+
+        center.add(cards, BorderLayout.NORTH);
+
+        // STACK DISPLAY
+        JPanel displayCard = new JPanel(new BorderLayout(0, 10));
+        displayCard.setBackground(foam);
+        displayCard.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(
+                new Color(222, 204, 184), 1
+            ),
+            new EmptyBorder(12, 12, 12, 12)
+        ));
+
+        JLabel stackTitle = new JLabel(
+            "  YOUR STACK  (TOP TO BOTTOM)"
+        );
+        stackTitle.setFont(new Font("SansSerif", Font.BOLD, 13));
+        stackTitle.setForeground(espresso);
+
+        stackPanel.setLayout(
+            new BoxLayout(stackPanel, BoxLayout.Y_AXIS)
+        );
+        stackPanel.setBackground(foam);
+        stackPanel.setBorder(new EmptyBorder(8, 10, 8, 10));
+
+        JScrollPane scrollPane = new JScrollPane(stackPanel);
+        scrollPane.setBorder(null);
+        scrollPane.getViewport().setBackground(foam);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+        displayCard.add(stackTitle, BorderLayout.NORTH);
+        displayCard.add(scrollPane, BorderLayout.CENTER);
+
+        center.add(displayCard, BorderLayout.CENTER);
+        main.add(center, BorderLayout.CENTER);
+
+        // BOTTOM CONTROLS
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
+        bottom.setOpaque(false);
+
+        JLabel inputTitle = new JLabel("ENTER A VALUE");
+        inputTitle.setFont(new Font("SansSerif", Font.BOLD, 12));
+        inputTitle.setForeground(espresso);
+        inputTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        inputField.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        inputField.setForeground(textBrown);
+        inputField.setBackground(foam);
+        inputField.setCaretColor(espresso);
+        inputField.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(caramel),
+            new EmptyBorder(9, 10, 9, 10)
+        ));
+        inputField.setMaximumSize(
+            new Dimension(Integer.MAX_VALUE, 42)
+        );
+        inputField.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        bottom.add(inputTitle);
+        bottom.add(Box.createVerticalStrut(6));
+        bottom.add(inputField);
+        bottom.add(Box.createVerticalStrut(12));
+
+        JPanel buttons = new JPanel(new GridLayout(2, 3, 8, 8));
+        buttons.setOpaque(false);
+
+        JButton pushButton = createButton("PUSH", espresso);
+        JButton popButton = createButton("POP", coffee);
+        JButton peekButton = createButton("PEEK", caramel);
+        JButton clearButton = createButton("CLEAR", espresso);
+        JButton checkButton = createButton("CHECK STACK", coffee);
+        JButton randomButton = createButton("RANDOM", caramel);
+        JButton sizeButton = createButton("SIZE", espresso);
+
+        buttons.add(pushButton);
+        buttons.add(popButton);
+        buttons.add(peekButton);
+        buttons.add(clearButton);
+        buttons.add(checkButton);
+        buttons.add(randomButton);
+
+        bottom.add(buttons);
+        bottom.add(Box.createVerticalStrut(8));
+        bottom.add(sizeButton);
+        bottom.add(Box.createVerticalStrut(12));
+
+        // STATUS MESSAGE
+        statusLabel.setOpaque(true);
+        statusLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
+        statusLabel.setBorder(new EmptyBorder(12, 12, 12, 12));
+        statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        statusLabel.setMaximumSize(
+            new Dimension(Integer.MAX_VALUE, 55)
+        );
+
+        bottom.add(statusLabel);
+        main.add(bottom, BorderLayout.SOUTH);
+
+        // BUTTON ACTIONS
+        pushButton.addActionListener(e -> pushValue());
+        popButton.addActionListener(e -> popValue());
+        peekButton.addActionListener(e -> peekValue());
+        clearButton.addActionListener(e -> clearStack());
+        checkButton.addActionListener(e -> checkStack());
+        randomButton.addActionListener(e -> randomStack());
+
+        sizeButton.addActionListener(e -> {
+            showStatus(
+                "INFO: Stack contains " + stack.size() + " element(s).",
+                "info"
+            );
+            refreshStack(false);
+        });
+
+        inputField.addActionListener(e -> pushValue());
+
+        refreshStack(false);
+        showStatus("Welcome! Your stack is ready.", "info");
+    }
+
+    private JPanel createInfoCard(String heading, JLabel value) {
+        JPanel card = new JPanel(new BorderLayout(0, 8));
+        card.setBackground(new Color(255, 249, 240));
+        card.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(
+                new Color(222, 204, 184)
+            ),
+            new EmptyBorder(13, 15, 13, 15)
+        ));
+
+        JLabel label = new JLabel(heading);
+        label.setFont(new Font("SansSerif", Font.BOLD, 11));
+        label.setForeground(coffee);
+
+        value.setFont(new Font("SansSerif", Font.BOLD, 23));
+        value.setForeground(espresso);
+
+        card.add(label, BorderLayout.NORTH);
+        card.add(value, BorderLayout.CENTER);
+
+        return card;
+    }
+
+    private JButton createButton(String name, Color color) {
+        JButton button = new JButton(name);
+        button.setFont(new Font("SansSerif", Font.BOLD, 11));
+        button.setForeground(Color.WHITE);
+        button.setBackground(color);
+        button.setOpaque(true);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setCursor(
+            new Cursor(Cursor.HAND_CURSOR)
+        );
+        button.setBorder(new EmptyBorder(12, 5, 12, 5));
+        return button;
+    }
+
+    private void pushValue() {
+        String text = inputField.getText().trim();
+
+        if (text.isEmpty()) {
+            showStatus("ERROR: Please enter an integer value.", "error");
+            return;
+        }
+
+        try {
+            int value = Integer.parseInt(text);
+
+            if (stack.isFull()) {
+                showStatus(
+                    "OVERFLOW: Cannot push. Stack is full (10/10).",
+                    "error"
+                );
+                return;
+            }
+
+            stack.push(value);
+            inputField.setText("");
+
+            showStatus("SUCCESS: Pushed " + value + ".", "success");
+            refreshStack(false);
+
+        } catch (NumberFormatException ex) {
+            showStatus(
+                "ERROR: Enter a valid integer, please.", "error"
+            );
+        }
+    }
+
+    private void popValue() {
+        if (stack.isEmpty()) {
+            showStatus(
+                "UNDERFLOW: Cannot pop. Stack is empty.", "error"
+            );
+            refreshStack(false);
+            return;
+        }
+
+        Integer removed = stack.pop();
+
+        showStatus("SUCCESS: Removed " + removed + ".", "success");
+        refreshStack(false);
+    }
+
+    private void peekValue() {
+        Integer value = stack.peek();
+
+        if (value == null) {
+            showStatus(
+                "EMPTY STACK: There is no top element.", "error"
+            );
+            refreshStack(false);
+            return;
+        }
+
+        showStatus(
+            "SUCCESS: Top element is " + value
+            + ". Stack remains unchanged.", "success"
+        );
+        refreshStack(true);
+    }
+
+    private void clearStack() {
+        stack.clear();
+        showStatus("SUCCESS: Stack cleared.", "success");
+        refreshStack(false);
+    }
+
+    private void checkStack() {
+        if (stack.isEmpty()) {
+            showStatus("INFO: Stack is EMPTY.", "info");
+        } else {
+            showStatus(
+                "SUCCESS: Stack is NOT EMPTY.", "success"
+            );
+        }
+
+        refreshStack(false);
+    }
+
+    private void randomStack() {
+        stack.clear();
+
+        int count = random.nextInt(stack.capacity()) + 1;
+
+        for (int i = 0; i < count; i++) {
+            stack.push(random.nextInt(100) + 1);
+        }
+
+        showStatus(
+            "SUCCESS: Generated " + count
+            + " random element(s).", "success"
+        );
+        refreshStack(false);
+    }
+
+    private void showStatus(String message, String type) {
+        statusLabel.setText(message);
+
+        if (type.equals("success")) {
+            statusLabel.setBackground(new Color(225, 241, 220));
+            statusLabel.setForeground(new Color(39, 91, 44));
+        } else if (type.equals("error")) {
+            statusLabel.setBackground(new Color(250, 224, 215));
+            statusLabel.setForeground(new Color(151, 45, 31));
+        } else {
+            statusLabel.setBackground(new Color(239, 225, 205));
+            statusLabel.setForeground(espresso);
+        }
+    }
+
+    private void refreshStack(boolean highlightTop) {
+        stackPanel.removeAll();
+
+        int[] values = stack.getItems();
+
+        for (int i = values.length - 1; i >= 0; i--) {
+            boolean isTop = (i == values.length - 1);
+
+            JPanel block = new JPanel(new BorderLayout());
+            block.setMaximumSize(
+                new Dimension(Integer.MAX_VALUE, 43)
+            );
+            block.setPreferredSize(new Dimension(300, 43));
+            block.setBackground(
+                isTop ? coffee : new Color(231, 211, 187)
+            );
+
+            block.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(
+                    isTop ? espresso : caramel
+                ),
+                new EmptyBorder(7, 12, 7, 12)
+            ));
+
+            JLabel number = new JLabel(
+                String.valueOf(values[i])
+            );
+            number.setFont(new Font("SansSerif", Font.BOLD, 16));
+            number.setForeground(
+                isTop ? Color.WHITE : espresso
+            );
+
+            JLabel tag = new JLabel(
+                isTop ? (highlightTop ? "TOP  PEEK" : "TOP") : ""
+            );
+            tag.setFont(new Font("SansSerif", Font.BOLD, 10));
+            tag.setForeground(
+                isTop ? new Color(255, 226, 174) : espresso
+            );
+
+            block.add(number, BorderLayout.WEST);
+            block.add(tag, BorderLayout.EAST);
+
+            stackPanel.add(block);
+            stackPanel.add(Box.createVerticalStrut(5));
+        }
+
+        if (values.length == 0) {
+            JLabel empty = new JLabel(
+                "Your stack is empty. Push a value to begin."
+            );
+            empty.setForeground(coffee);
+            empty.setFont(new Font("SansSerif", Font.ITALIC, 13));
+            empty.setBorder(new EmptyBorder(20, 5, 20, 5));
+            stackPanel.add(empty);
+        }
+
+        sizeValue.setText(
+            stack.size() + " / " + stack.capacity()
+        );
+
+        Integer top = stack.peek();
+        topValue.setText(top == null ? "None" : top.toString());
+
+        stackPanel.revalidate();
+        stackPanel.repaint();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new StackGUI().setVisible(true);
+        });
+    }
+}
+
