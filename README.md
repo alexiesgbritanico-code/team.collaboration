@@ -64,7 +64,7 @@ The stack class provides methods such as push(), pop(), peek(), isEmpty(), isFul
 
 12.	Contributors
 
-Llanos — Module Answers and Code Modification
+Llanos Module Answers and Code Modification
 
 Responsible for answering the laboratory module questions and editing the existing Java code based on the given instructions and the code provided by the group. Reviewed the program requirements and adjusted the code to match the expected functionality and design. Also helped ensure that the written answers and program implementation were aligned with the laboratory activity.
 
