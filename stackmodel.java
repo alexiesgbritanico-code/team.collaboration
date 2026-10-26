@@ -72,4 +72,5 @@ public class StackModel {
     }
 }
 
-
+//this Coffee Stack Visualizer is a Java program that demonstrates the LIFO (Last In, First Out) principle. When the program starts, it displays the stack, stack size, top element, and operation buttons. When the
+//user clicks a button, StackGUI calls the appropriate method from StackModel. After the operation,the GUI updates the display and status message.
